@@ -36,17 +36,26 @@ def getMatch(birthdays):
             uniqueDates.add(date)
         else:
             return date
+        
+def getMatch1(birthdays):
+    """Does the same things as the first getMatch function, 
+    it's implemented in a slightly different way"""
+    if len(set(birthdays)) == len(birthdays):
+        return None
+    for a, birthdayA in enumerate(birthdays):
+        for _,birthdayB in enumerate(birthdays[a+1:]):
+            if birthdayA == birthdayB:
+                return birthdayA
+
     
      
 
 if __name__ == "__main__":
-  # print('Enter the number of birthday to generate. (Max 100)')
-   #noOfBirthdays = input('>')
+    print('Enter the number of birthday to generate. (Max 100)')
+    noOfBirthdays = input('>')
 
-   #while noOfBirthdays is not noOfBirthdays.isdecimal() or noOfBirthdays !< 100:
-          #print('Enter a value within range')
-          #noOfBirthdays = input('>')
-
-   #print(', '.join(getBirthdays(noOfBirthdays)))
+    while  not noOfBirthdays.isdecimal() or not (0 < int(noOfBirthdays) <=100):
+        print('Enter a value within range')
+        noOfBirthdays = input('>')
    
-   print(getMatch(getBirthdays(23)))
+    print(getMatch1(getBirthdays(int(noOfBirthdays))))
