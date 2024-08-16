@@ -66,10 +66,28 @@ class Player:
                 print(row)
 
 
+    def getHandValue(self,player_hand):
+        #evaluates the total of a hand
+        total   = 0
+        no_aces = 0 # keeps track of the number of aces in 
+                    #a hand so it can added to the total last
+                    #so as to better decide w
+
+        for rank, _ in player_hand():
+            if rank.isdigit():
+                total += int(rank)
+            elif rank in ('J','Q','K'):
+                total += 10
+            else:
+                no_aces += 1
+
+        total += no_aces # adds aces as 1
+        for _ in range(no_aces):
+            if total + 10 <= 21: #(10 + 1 = 11) testin for ace as 11
+                total += 10
 
 
-
-   
+        return total
 
 
 class Dealer(Player):
