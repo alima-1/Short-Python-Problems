@@ -14,8 +14,8 @@ def get_player_names():
             continue
         #handle players exceeding max players
         if len(player_names) > 6:
-            print(f"Only {max_players} players are allowed."
-                "Truncating the list to {max_players} players.")
+            print(f"Only {max_players} players are allowed.
+                  Truncating the list to {max_players} players.")
             player_names = player_names[:max_players]
         #Handle dulpicates
         if len(player_names) != len(set(player_names)):
@@ -45,8 +45,8 @@ class Player:
                 else:
                    self.bets.append(bet) 
                 break
-            except ValueError:
-                print("that's not a valid integer. Please try again.")
+            except ValueError as e:
+                print(f"{e}. That's not a valid integer. Please try again.")
     
 
     def show_cards(self):    
@@ -85,17 +85,25 @@ class Player:
                 total += 10
         return total
     
-    def doubleDown(self, hand_index, card):
-        #the no of hands a player has will always match
-        #the no of bets placed.
-        doubled_bet = self.bets[hand_index] * 2
-        #replacing old bet with doubled bet
-        self.bets.insert(hand_index, doubled_bet)
-        self.hands[hand_index].append(card)
+    def doubleDown(self, dealer_object):
+        #The player can only double down on their initial two-card hand
+        #implying that the length of the hands list must be equal to 1
+        start_index = 0
+        #the first hand in hands
+        first_hand = self.hands[start_index]
+        if len(self.hands) == 1 and len(first_hand) == 2:
+            #the no of hands a player has will always match
+            #the no of bets placed.
+            doubled_bet = self.bets[start_index] * 2
+            #replacing old bet with doubled bet
+            self.bets.insert(start_index, doubled_bet)
+            self.hands[start_index].append(dealer_object.deal_cards())
+        else:
+            print("You can only double down on the initial 2 card hand.")
 
-    def hit(self,hand_index, card):
+    def hit(self,hand_index, dealer_object):
         #adds a card to the respective hand
-        self.hands[hand_index].append(card)
+        self.hands[hand_index].append(dealer_object.deal_cards())
 
     def split(self, hand_index, dealer_object):
         #Only split cards of the same rank not value
@@ -118,23 +126,25 @@ class Player:
             second_hand = [second_card,dealer_object.deal_cards()]
             # Update self.hands with the new hands
             self.hands[hand_index] = first_hand
-            self.append(second_hand)
+            self.hands.append(second_hand)
             self.splits += 1
         else:
             print("Cannot Split: The cards are not of the same rank.")
 
-    def stand(self):
-        pass
+    def stand(self, hand_index):
+        print(f"{self.name} stands on Hand #{hand_index + 1}.")
 
 
 
 class Dealer(Player):
+    NUM_DECKS = 3
+
     def __init__(self):
         self.name = "Dealer"
         self.hands= [] # B'se a player can have multiple hands (spliting)
         self.deck = self._create_deck() 
     
-    def _create_deck(self,num_decks = 3 ):
+    def _create_deck(self,num_decks = NUM_DECKS ):
         rank = ('2', '3', '4','5', '6', '7','8','9', '10', 'J', 'Q', 'K', 'A')
         suit = {"Hearts":"\u2665", "Diamonds":"\u2666", "Clubs":"\u2663", "Spades":"\u2660"}
         #create deck of cards = to num of decks 
