@@ -4,8 +4,8 @@ class Card:
     def __init__(self, rank, suit):
         self.rank = rank
         self.suit = suit
-    
-    def get_card_value(self):
+        
+    def getCardValue(self):
         if self.rank.isdigit():
             return int(self.rank)
         
@@ -17,7 +17,9 @@ class Card:
         
 
 class Deck:
-    def __init__(self, num_of_decks):
+    def __init__(self, num_of_decks = 1):
+        if num_of_decks <= 0:
+            raise ValueError("Number of decks must be a positive integer.")
         self.num_of_decks = num_of_decks
         self.cards = self.createDeck(self.num_of_decks)
         #shuffle the deck
