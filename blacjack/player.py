@@ -38,7 +38,7 @@ class Hand:
 class Player:
     def __init__(self):
         self.hands = []
-        self.active_hand = 0
+        self.active_hand = 0 #active when being played
         self. __max_split_limit = 3
         self.no_of_splits = 0
 
@@ -71,7 +71,7 @@ class Player:
                     dealt_card1 = deck.dealCard() 
                     hand.addCard(dealt_card1)
 
-                    new_hand   = Hand()
+                    new_hand = Hand()
                     bet = hand.bet
                     new_hand.placeBet(bet)
                     new_hand.addCard(split_card)
@@ -94,7 +94,7 @@ class Player:
             card = deck.dealCard()
             hand.addCard(card)
         else:
-             print("Player cannot hit (either has 21 or busted).")
+            print("Player cannot hit (either has 21 or busted).")
     
     def stand(self, hand):
         hand_value = hand.getHandValue()
@@ -119,3 +119,33 @@ class Player:
         #create a space after displaying hands 
         print()
 
+class Dealer:
+    def __init__(self):
+        self.hand = Hand()
+
+    def displayHand(self, hide=False):
+        rows = ['','','','','']
+        cards = self.hand.cards #Access the cards from the Hand instance
+
+        for i, card in enumerate(cards):
+            if hide == True and i == 0:
+                rank, suit = '#', '##' #Hide the first card if hide=True
+            else:
+                rank, suit = card.rank, card.suit
+
+            rows[0] += f' ___'
+            rows[1] += f'|{rank}  |'
+            rows[2] += f'| {suit} |'
+            rows[4] += f'|__{rank}|'
+
+        for row in rows:
+            print(row)
+        #create a space after displaying hands 
+        print()
+
+    def hit(self, deck):
+        if self.hand.getHandValue() < 17:
+            card = deck.dealCard()
+            self.hand.addCard(card)
+        else:
+            print("Dealer cannot hit (Hand value must be greater than 17).")
