@@ -15,7 +15,7 @@ Problem2/: Solution for Problem 2 from the book.
 ...
 
 How to Use:
-Navigate to the directory of the proble your interested in and run
+Navigate to the directory of the problem your interested in and run
 the script using python.
 
 Acknowledgements:
